@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <h3><a class="nav-item nav-link" href="{% url 'edu-assessment' %}" style="color: darkgoldenrod;">Back</a></h3>
+
+    <h3><a class="nav-item nav-link" href="{% url 'edu-cloud_choice' %}" style="color: darkgreen;">Cloud-Choice</a></h3>
+    <title>Print Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            margin: 20px;
+        }
+        
+        h1 {
+            font-size: 18pt;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .comment {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assessment Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Recommendation</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recommendation in recommendations %}
+            <tr>
+                <td>{{ recommendation.question }}</td>
+                <td>{{ recommendation.answer }}</td>
+                <td>{{ recommendation.recommendation }}</td>
+                <td>{{ recommendation.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="result">
+        <p> You need 80% and Above to Qualify for Cloud </p>
+        <p>Maximum Grade: {{ max_grade }}%</p>
+        <p>User's Grade: {{ user_grade }}%</p>
+    </div>
+    
+    <div class="comment">
+        {% if user_grade >= passing_grade %}
+            <p>Congratulations! You are qualified to go to the cloud. Click the Cloud Choice above to move to the next stage</p>
+        {% else %}
+            <p>Work on the recommendations and improve your assessment to qualify for the cloud.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

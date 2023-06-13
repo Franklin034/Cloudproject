@@ -1,0 +1,59 @@
+<!-- Add this code to your assessment.html template -->
+{% extends "edu/base-learn.html" %}
+{% block content %}
+<b><legend  style="text-align: center;">Cloud Migration Assessment</legend></b>
+<p style="text-align: center; color: darkgreen;font-family: 'Times New Roman', Times, serif;">Question 1 to 6 is<b style="font-size: 20px;"> Technology Assessment</b> </p>
+<p style="text-align: center; color: darkgreen; font-family: 'Times New Roman', Times, serif; ">Question 7 to 12  is  <b style="font-size: 20px;">Organization Assessment</b></p>
+<p style="text-align: center; color: darkgreen; font-family: 'Times New Roman', Times, serif; ">Question 13 to 15 is  <b style="font-size: 20px;">Environment Assessment</b></p>
+<article class="media content-section">
+    <style>
+        @media print {
+            /* Adjust the styling for printing */
+            body {
+                font-size: 12pt;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .print-form {
+                padding: 20px;
+            }
+            
+            /* Add any additional styling for printing as needed */
+        }
+    </style>
+    <div class="print-form">
+        <form method="post" action="{% url 'edu-assessment' %}">
+            {% csrf_token %}
+            {% for question in questions %}
+            <div>
+            <h5>    <b><p><label style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman'; font-size: 20px;">{{ question.question_text }}</label></p></b></h5>
+               <h6> <div class="media-body">
+                    <div class="article-metadata" style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman'; font-size: 20px;">
+                        <input type="radio" name="{{ question.id }}" value="Agreed" required> Agreed <br>
+                        <input type="radio" name="{{ question.id }}" value="Maybe" required> Maybe <br>
+                        <input type="radio" name="{{ question.id }}" value="Disagreed" required> Disagreed
+                        {% for answer in answers %}
+                            {% if answer.question.id == question.id %}
+                                {% if answer.answer_text == 'Agreed' %}
+                                    <br>
+                                    <p>Recommendation: Continue attending his lecture</p>
+                                {% elif answer.answer_text == 'Maybe' %}
+                                    <br>
+                                    <p>Recommendation: You may have to stop attending his lecture</p>
+                                {% elif answer.answer_text == 'Disagreed' %}
+                                    <br>
+                                    <p>Recommendation: You have to stop attending his lecture</p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div> </h6>
+            </div> <br>
+            {% endfor %} <br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</article>
+{% endblock content %}
+
